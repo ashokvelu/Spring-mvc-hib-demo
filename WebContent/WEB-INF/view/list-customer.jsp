@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 
@@ -41,12 +41,31 @@
 				
 				<!-- loop over and print the customers -->
 				<c:forEach var = "tempCustomer" items = "${customer}">
+					
+					<!--  construct an Update link with cust ID -->
+					<c:url var ="updateLink" value="/customer/showFormForUpdate">
+						<c:param name ="customerId" value="${tempCustomer.id }"/>
+					</c:url>
+					
+					<!--  construct an Delete link with cust ID -->
+					<c:url var ="deleteLink" value="/customer/deleteCustomer">
+						<c:param name ="customerId" value="${tempCustomer.id }"/>
+					</c:url>
+					
+				
 					<tr>
 						<td>${tempCustomer.firstName}</td>
 						<td>${tempCustomer.lastName}</td>
 						<td>${tempCustomer.email}</td>
+						<td>
+							<!-- display the update link -->
+						<a href="${updateLink}">Update</a>
+							<!--  Display the delete link -->
+							| <a href="${deleteLink}"
+							onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false "
+							>Delete</a>
+						</td>
 					</tr>
-				
 				</c:forEach>
 				
 			</table> 

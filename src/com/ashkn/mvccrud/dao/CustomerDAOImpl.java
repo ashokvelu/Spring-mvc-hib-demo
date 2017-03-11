@@ -27,7 +27,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		//Query creation
 		Query<Customer> theQuery = 
-				currentSession.createQuery("from Customer ", Customer.class);
+				currentSession.createQuery("from Customer order by firstName", Customer.class);
 		
 		//get the result List from the query
 		
@@ -38,6 +38,44 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return customers;
 	}
 
+	@Override
+	public void saveCustomer(Customer theCustomer) {
+		
+		//get the current hibernate  session
+		Session currentSession = sessionFactory.getCurrentSession(); 
+		
+		// save or update the customer 
+		currentSession.saveOrUpdate(theCustomer);
+		
+	}
+
+	@Override
+	public Customer getCustomers(int theId) {
+		//get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//get customer based on customer ID
+		
+		Customer theCustomer = currentSession.get(Customer.class, theId);
+		
+		return theCustomer; 
+	}
+
+	@Override
+	public void deleteCustomer(int theId) {
+		//get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//delete Customer
+		Query<Customer> theQuery =
+				currentSession.createQuery("Delete from Customer where id=:theCustomerId");
+		theQuery.setParameter("theCustomerId", theId);
+		
+		theQuery.executeUpdate(); 
+		
+	}
+
+	
 }
 
 
